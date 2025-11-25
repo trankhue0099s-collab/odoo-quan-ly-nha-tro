@@ -1,0 +1,51 @@
+<odoo>
+    <data>
+        <record id="action_report_hop_dong" model="ir.actions.report">
+            <field name="name">In Hợp Đồng Thuê Nhà</field>
+            <field name="model">quan_ly_nha_tro.hop_dong</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">quan_ly_nha_tro.report_hop_dong_template</field>
+            <field name="report_file">quan_ly_nha_tro.report_hop_dong_template</field>
+            <field name="print_report_name">'Hop_dong_%s' % object.name</field>
+            <field name="binding_model_id" ref="model_quan_ly_nha_tro_hop_dong"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <template id="report_hop_dong_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <div class="text-center">
+                                <h3>CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</h3>
+                                <h4>Độc lập - Tự do - Hạnh phúc</h4>
+                                <hr style="width:50%; border-top: 2px solid black;"/>
+                                <br/>
+                                <h2>HỢP ĐỒNG THUÊ NHÀ</h2>
+                                <p>Số: <span t-field="o.name"/></p>
+                            </div>
+                            <br/>
+                            <p>Hôm nay, ngày <span t-field="o.ngay_bat_dau"/>, chúng tôi gồm:</p>
+                            <p><strong>BÊN A (Chủ nhà):</strong> CHỦ NHÀ TRỌ</p>
+                            <p><strong>BÊN B (Khách thuê):</strong> <span t-field="o.khach_thue_id.name"/></p>
+                            <p> - CCCD: <span t-field="o.khach_thue_id.cmnd"/></p>
+                            <p> - SĐT: <span t-field="o.khach_thue_id.sdt"/></p>
+                            <hr/>
+                            <p><strong>Nội dung thuê:</strong></p>
+                            <ul>
+                                <li>Phòng: <strong><span t-field="o.phong_tro_id.name"/></strong></li>
+                                <li>Giá: <span t-field="o.gia_thue"/> VNĐ/tháng</li>
+                                <li>Thời hạn: Từ <span t-field="o.ngay_bat_dau"/> đến <span t-field="o.ngay_ket_thuc"/></li>
+                            </ul>
+                            <br/><br/>
+                            <div class="row">
+                                <div class="col-6 text-center"><strong>BÊN A</strong><br/><br/><br/>(Ký tên)</div>
+                                <div class="col-6 text-center"><strong>BÊN B</strong><br/><br/><br/>(Ký tên)</div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

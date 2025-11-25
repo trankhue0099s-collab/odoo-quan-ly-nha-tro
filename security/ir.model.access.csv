@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_phong_tro,quan_ly_nha_tro.phong_tro,model_quan_ly_nha_tro_phong_tro,base.group_user,1,1,1,1
+access_khach_thue,quan_ly_nha_tro.khach_thue,model_quan_ly_nha_tro_khach_thue,base.group_user,1,1,1,1
+access_hop_dong,quan_ly_nha_tro.hop_dong,model_quan_ly_nha_tro_hop_dong,base.group_user,1,1,1,1
+access_hoa_don,quan_ly_nha_tro.hoa_don,model_quan_ly_nha_tro_hoa_don,base.group_user,1,1,1,1

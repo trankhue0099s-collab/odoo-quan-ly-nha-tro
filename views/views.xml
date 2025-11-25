@@ -1,0 +1,221 @@
+<odoo>
+    <data>
+        <record id="phong_tro_view_kanban" model="ir.ui.view">
+            <field name="name">phong.tro.view.kanban</field>
+            <field name="model">quan_ly_nha_tro.phong_tro</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="tinh_trang" records_draggable="false">
+                    <field name="name"/>
+                    <field name="gia_thue"/>
+                    <field name="dien_tich"/>
+                    <field name="tinh_trang"/>
+                    <field name="id"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                                <div class="o_kanban_record_top">
+                                    <strong class="o_kanban_record_title">
+                                        <span style="font-size: 16px;">🏠 <field name="name"/></span>
+                                    </strong>
+                                </div>
+                                <div class="o_kanban_record_body">
+                                    <div>Giá: <strong><field name="gia_thue"/></strong> đ</div>
+                                    <div>Diện tích: <field name="dien_tich"/> m2</div>
+                                </div>
+                                <div class="o_kanban_record_bottom">
+                                    <div class="oe_kanban_bottom_left">
+                                        <span t-if="record.tinh_trang.raw_value == 'trong'" class="badge text-bg-success">Còn trống</span>
+                                        <span t-if="record.tinh_trang.raw_value == 'dang_thue'" class="badge text-bg-danger">Đang thuê</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="phong_tro_view_form" model="ir.ui.view">
+            <field name="name">phong.tro.view.form</field>
+            <field name="model">quan_ly_nha_tro.phong_tro</field>
+            <field name="arch" type="xml">
+                <form string="Thông tin phòng trọ">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="gia_thue"/>
+                            </group>
+                            <group>
+                                <field name="dien_tich"/>
+                                <field name="tinh_trang"/>
+                            </group>
+                        </group>
+                        <field name="mo_ta" placeholder="Mô tả chi tiết..."/>
+                        <notebook>
+                            <page string="Danh sách Hợp đồng">
+                                <field name="hop_dong_ids"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="phong_tro_action" model="ir.actions.act_window">
+            <field name="name">Quản lý Phòng trọ</field>
+            <field name="res_model">quan_ly_nha_tro.phong_tro</field>
+            <field name="view_mode">kanban,tree,form</field>
+        </record>
+
+
+        <record id="hop_dong_view_tree" model="ir.ui.view">
+            <field name="name">hop.dong.view.tree</field>
+            <field name="model">quan_ly_nha_tro.hop_dong</field>
+            <field name="arch" type="xml">
+                <tree decoration-info="trang_thai == 'moi'" decoration-danger="trang_thai == 'da_ket_thuc'" decoration-success="trang_thai == 'dang_thue'">
+                    <field name="name"/>
+                    <field name="khach_thue_id"/>
+                    <field name="phong_tro_id"/>
+                    <field name="ngay_bat_dau"/>
+                    <field name="ngay_ket_thuc"/>
+                    <field name="trang_thai" widget="badge"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="hop_dong_view_form" model="ir.ui.view">
+            <field name="name">hop.dong.view.form</field>
+            <field name="model">quan_ly_nha_tro.hop_dong</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <field name="trang_thai" widget="statusbar"/>
+                        <button string="In Hợp Đồng" name="%(action_report_hop_dong)d" type="action" class="oe_highlight"/>
+                    </header>
+                    <sheet>
+                        <h1><field name="name"/></h1>
+                        <group>
+                            <group>
+                                <field name="khach_thue_id"/>
+                                <field name="phong_tro_id"/>
+                            </group>
+                            <group>
+                                <field name="ngay_bat_dau"/>
+                                <field name="ngay_ket_thuc"/>
+                                <field name="gia_thue"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="hop_dong_action" model="ir.actions.act_window">
+            <field name="name">Quản lý Hợp đồng</field>
+            <field name="res_model">quan_ly_nha_tro.hop_dong</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+        <record id="khach_thue_view_form" model="ir.ui.view">
+            <field name="name">khach.thue.view.form</field>
+            <field name="model">quan_ly_nha_tro.khach_thue</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_hop_dong" 
+                                    type="object" 
+                                    class="oe_stat_button" 
+                                    icon="fa-file-text-o">
+                                <field name="hop_dong_count" widget="statinfo" string="Hợp đồng"/>
+                            </button>
+                        </div>
+                        <field name="image" widget="image" class="oe_avatar"/>
+                        <div class="oe_title">
+                            <h1><field name="name" placeholder="Tên khách thuê..."/></h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="cmnd"/>
+                                <field name="sdt"/>
+                            </group>
+                            <group>
+                                <field name="gioi_tinh"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="khach_thue_action" model="ir.actions.act_window">
+            <field name="name">Quản lý Khách thuê</field>
+            <field name="res_model">quan_ly_nha_tro.khach_thue</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+        <record id="hoa_don_view_graph" model="ir.ui.view">
+            <field name="name">hoa.don.view.graph</field>
+            <field name="model">quan_ly_nha_tro.hoa_don</field>
+            <field name="arch" type="xml">
+                <graph string="Doanh Thu" type="bar">
+                    <field name="thang"/>
+                    <field name="tong_tien" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <record id="hoa_don_view_tree" model="ir.ui.view">
+            <field name="name">hoa.don.view.tree</field>
+            <field name="model">quan_ly_nha_tro.hoa_don</field>
+            <field name="arch" type="xml">
+                <tree decoration-info="state == 'draft'" 
+                      decoration-success="state == 'paid'" 
+                      decoration-muted="state == 'cancel'">
+                    <field name="name"/>
+                    <field name="hop_dong_id"/>
+                    <field name="thang"/>
+                    <field name="tong_tien" sum="Tổng doanh thu"/>
+                    <field name="state" widget="badge" 
+                           decoration-info="state == 'draft'" 
+                           decoration-success="state == 'paid'"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="hoa_don_view_search" model="ir.ui.view">
+            <field name="name">hoa.don.view.search</field>
+            <field name="model">quan_ly_nha_tro.hoa_don</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="hop_dong_id"/>
+                    <field name="thang"/>
+                    <filter string="Mới tạo (Nháp)" name="filter_draft" domain="[('state', '=', 'draft')]"/>
+                    <filter string="Đã thu tiền" name="filter_paid" domain="[('state', '=', 'paid')]"/>
+                    <group expand="0" string="Nhóm theo">
+                        <filter string="Theo Tháng" name="group_by_thang" context="{'group_by': 'thang'}"/>
+                        <filter string="Theo Trạng thái" name="group_by_state" context="{'group_by': 'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="hoa_don_action" model="ir.actions.act_window">
+            <field name="name">Quản lý Hóa đơn</field>
+            <field name="res_model">quan_ly_nha_tro.hoa_don</field>
+            <field name="view_mode">graph,tree,form</field>
+        </record>
+
+
+        <menuitem id="menu_nha_tro_root" name="Quản Lý Nhà Trọ" sequence="1"/>
+        <menuitem id="menu_phong_tro" name="Phòng Trọ" parent="menu_nha_tro_root" action="phong_tro_action" sequence="1"/>
+        <menuitem id="menu_hop_dong" name="Hợp Đồng" parent="menu_nha_tro_root" action="hop_dong_action" sequence="2"/>
+        <menuitem id="menu_khach_thue" name="Khách Thuê" parent="menu_nha_tro_root" action="khach_thue_action" sequence="3"/>
+        <menuitem id="menu_hoa_don" name="Hóa Đơn Điện Nước" parent="menu_nha_tro_root" action="hoa_don_action" sequence="4"/>
+
+    </data>
+</odoo>

@@ -1,0 +1,26 @@
+<odoo>
+    <record id="view_thue_phong_wizard_form" model="ir.ui.view">
+        <field name="name">thue.phong.wizard.form</field>
+        <field name="model">quan_ly_nha_tro.thue_phong.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Thuê Phòng Nhanh">
+                <group>
+                    <field name="phong_tro_id"/>
+                    <field name="khach_thue_id"/>
+                    <field name="ngay_bat_dau"/>
+                </group>
+                <footer>
+                    <button name="action_tao_hop_dong" string="Xác Nhận Thuê" type="object" class="btn-primary"/>
+                    <button string="Hủy Bỏ" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_thue_phong_wizard" model="ir.actions.act_window">
+        <field name="name">Thuê Phòng Nhanh</field>
+        <field name="res_model">quan_ly_nha_tro.thue_phong.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>
